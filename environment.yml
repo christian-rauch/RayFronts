@@ -5,6 +5,7 @@ channels:
   - nvidia
   - conda-forge
   - pyg
+  - robostack-jazzy
 dependencies:
   - python=3.12
   - numpy
@@ -13,6 +14,8 @@ dependencies:
   - pip
   - tbb==2021.13
   - libboost
+  - ros-jazzy-desktop
+  - ros-jazzy-rmw-zenoh-cpp
   - pip:
     - rerun-sdk
     - timm
