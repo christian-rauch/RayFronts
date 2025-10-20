@@ -392,6 +392,17 @@ class MappingServer:
 
 def signal_handler(mapping_server: MappingServer, sig, frame):
   with mapping_server._status_lock:
+
+    # export voxel grid
+    if not mapping_server.mapper.is_empty():
+      import open3d as o3d
+      vox_xyz = mapping_server.mapper.global_vox_xyz.cpu().numpy()
+      vox_rgb = mapping_server.mapper.global_vox_rgb.cpu().numpy()
+      pcd_colour = o3d.geometry.PointCloud()
+      pcd_colour.points = o3d.utility.Vector3dVector(vox_xyz)
+      pcd_colour.colors = o3d.utility.Vector3dVector(vox_rgb)
+      o3d.io.write_point_cloud("/tmp/pcd_colour.ply", pcd_colour, write_ascii=False)
+
     if mapping_server.status == MappingServer.Status.MAPPING:
       if mapping_server.messaging_service is not None:
         logger.info(
