@@ -398,10 +398,19 @@ def signal_handler(mapping_server: MappingServer, sig, frame):
       import open3d as o3d
       vox_xyz = mapping_server.mapper.global_vox_xyz.cpu().numpy()
       vox_rgb = mapping_server.mapper.global_vox_rgb.cpu().numpy()
+      vox_feat = mapping_server.encoder.align_spatial_features_with_language(
+        mapping_server.mapper.global_vox_feat.unsqueeze(-1).unsqueeze(-1)
+      ).squeeze(-1).squeeze(-1).cpu().numpy()
       pcd_colour = o3d.geometry.PointCloud()
       pcd_colour.points = o3d.utility.Vector3dVector(vox_xyz)
       pcd_colour.colors = o3d.utility.Vector3dVector(vox_rgb)
       o3d.io.write_point_cloud("/tmp/pcd_colour.ply", pcd_colour, write_ascii=False)
+
+      pc_attributes = {
+          "positions": vox_xyz,
+          "embeddings": vox_feat,
+      }
+      np.savez("/tmp/pcd_embeddings", **pc_attributes,)
 
     if mapping_server.status == MappingServer.Status.MAPPING:
       if mapping_server.messaging_service is not None:
