@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class Mapping3DVisualizer(abc.ABC):
   """Base interface for all 3D mapping visualizers
-  
+
   Attributes:
     intrinsics_3x3: See __init__
     img_size: See __init__
@@ -73,10 +73,10 @@ class Mapping3DVisualizer(abc.ABC):
 
   def _preprocess_img(self, img: torch.FloatTensor) -> torch.FloatTensor:
     """Resize image to self.img_size if needed
-    
+
     Args:
       img: (HxWx3) Float tensor in the range [0-1].
-    
+
     Returns:
       (H'xW'x3) Float tensor in the range [0-1].
     """
@@ -118,7 +118,7 @@ class Mapping3DVisualizer(abc.ABC):
               layer: str = "img",
               pose_layer: str = "pose") -> None:
     """Image logging primitive. Must be implemented by child class.
-    
+
     Args:
       img: (HxWx3) Float tensor in the range [0-1] corresponding to RGB values.
       layer: Name of layer to log to. Interpretation varies by child class.
@@ -150,7 +150,7 @@ class Mapping3DVisualizer(abc.ABC):
                  arr_rgb: torch.FloatTensor = None,
                  layer: str = "arr") -> None:
     """Arrow logging primitive. Must be implemented by child class.
-    
+
     Args:
       arr_origins: (Nx3) Float tensor represeting starting points of arrows
       arr_dirs: (Nx3) Float tensor represeting direction vectors.
@@ -166,7 +166,7 @@ class Mapping3DVisualizer(abc.ABC):
               box_maxs: torch.FloatTensor,
               layer: str = "box"):
     """Bounding box logging primitive. Must be implemented by child class.
-    
+
     Args:
       box_mins: (Nx3) Float tensor describing the min value corner of the boxes.
       box_maxs: (Nx3) Float tensor describing the max value corner of the boxes.
@@ -217,7 +217,7 @@ class Mapping3DVisualizer(abc.ABC):
                        arr_labels: torch.LongTensor = None,
                        layer: str = "arr_label") -> None:
     """Logs arrows where each arrow has a numerical label.
-    
+
     Maps labels to a variety of disparate RGB colors consistent with other
     label logging functions.
 
@@ -234,7 +234,7 @@ class Mapping3DVisualizer(abc.ABC):
 
   def _normalize_heat(self, heat: torch.FloatTensor) -> torch.FloatTensor:
     """Normalizes a list of heat values to be within [0-1] range.
-    
+
     If global_heat_scale is True, then keeps a running min and max for
     normalizing all subsequent calls with the same scale.
 
@@ -267,7 +267,7 @@ class Mapping3DVisualizer(abc.ABC):
                    layer: str = "img_heat",
                    pose_layer: str = "pose") -> None:
     """Logs a heat map.
-    
+
     Args:
       img_heat: (HxW) Float Tensor with heat values. Need not be normalized.
       high_color: A tuple of 3 integers describing the RGB values of the highest
@@ -288,7 +288,7 @@ class Mapping3DVisualizer(abc.ABC):
                   scale_size: bool = False,
                   layer: str = "pc_heat") -> None:
     """Logs a heat point cloud.
-    
+
     Args:
       pc_xyz: (Nx3) float tensor
       pc_heat: (N) float tensor describing the heat values.
@@ -327,7 +327,7 @@ class Mapping3DVisualizer(abc.ABC):
                       scale_size: bool = False,
                       layer: str = "arr_heat") -> None:
     """Logs heat arrows.
-    
+
     Args:
       arr_origins: (Nx3) Float tensor represeting starting points of arrows
       arr_dirs: (Nx3) Float tensor represeting direction vectors.
@@ -414,7 +414,7 @@ class Mapping3DVisualizer(abc.ABC):
       else:
         try:
           self.feat_compressor.fit(feats)
-          # Fitted compressor to new distribution. Let's reset the min max 
+          # Fitted compressor to new distribution. Let's reset the min max
           # for normalization.
           self._projected_feats_min = None
           self._projected_feats_max = None
@@ -481,7 +481,7 @@ class Mapping3DVisualizer(abc.ABC):
                  pc_radii: torch.FloatTensor = None,
                  layer: str = "pc_occ"):
     """Log a point cloud / sparse voxel map representing occupancy.
-    
+
     Args:
       pc_xyz: (Nx3) Float tensor
       pc_occ: N Float tensor representing occupancy values.

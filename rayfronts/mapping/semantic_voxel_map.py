@@ -25,10 +25,10 @@ from rayfronts import (geometry3d as g3d, image_encoders, visualizers,
 from rayfronts.utils import compute_cos_sim
 
 class SemanticVoxelMap(SemanticRGBDMapping):
-  """A minimalist semantic voxel map. 
-  
+  """A minimalist semantic voxel map.
+
   Given Posed RGBD input, an encoder is used to extract vision based semantics
-  and the semantics are unprojected into the world and voxelized. Voxels can 
+  and the semantics are unprojected into the world and voxelized. Voxels can
   then be queried with images or with text (If encoder produces language aligned
   features).
 
@@ -40,7 +40,7 @@ class SemanticVoxelMap(SemanticRGBDMapping):
     encoder: See base.
     feat_compressor: See base.
     interp_mode: See base.
-  
+
     max_pts_per_frame: See __init__.
     vox_size: See __init__.
     windowing: See __init__.
@@ -75,10 +75,10 @@ class SemanticVoxelMap(SemanticRGBDMapping):
       feat_compressor: See base.
       interp_mode: See base.
 
-      max_pts_per_frame: How many points to project per frame. Set to -1 to 
+      max_pts_per_frame: How many points to project per frame. Set to -1 to
         project all valid depth points.
       vox_size: Length of a side of a voxel in meters.
-      vox_accum_period: How often do we aggregate voxels into the global 
+      vox_accum_period: How often do we aggregate voxels into the global
         representation. Setting to 10, will accumulate point clouds from 10
         frames before voxelization. Should be tuned to balance memory,
         throughput, and min latency.
