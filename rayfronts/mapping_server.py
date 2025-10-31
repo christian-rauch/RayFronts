@@ -106,6 +106,14 @@ class MappingServer:
       cfg.mapping, intrinsics_3x3=intrinsics_3x3, visualizer=self.vis,
       **mapper_kwargs)
 
+    # check if an export directory was set
+    env_name = "RAYFRONTS_EXPORT_PATH"
+    if env_name in os.environ:
+      self.export_dir = os.environ[env_name]
+    else:
+      self.export_dir = "/tmp"
+    logger.info(f"exporting to: {self.export_dir}")
+
     # Dictionary mapping a label group name to a list of string labels.
     # In the case of a text query, the label is the query. In case of image
     # querying, the label is the image file name.
@@ -404,13 +412,13 @@ def signal_handler(mapping_server: MappingServer, sig, frame):
       pcd_colour = o3d.geometry.PointCloud()
       pcd_colour.points = o3d.utility.Vector3dVector(vox_xyz)
       pcd_colour.colors = o3d.utility.Vector3dVector(vox_rgb)
-      o3d.io.write_point_cloud("/tmp/pcd_colour.ply", pcd_colour, write_ascii=False)
+      o3d.io.write_point_cloud(os.path.join(mapping_server.export_dir, "pcd_colour.ply"), pcd_colour, write_ascii=False)
 
       pc_attributes = {
           "positions": vox_xyz,
           "embeddings": vox_feat,
       }
-      np.savez("/tmp/pcd_embeddings", **pc_attributes,)
+      np.savez(os.path.join(mapping_server.export_dir, "pcd_embeddings"), **pc_attributes,)
 
     if mapping_server.status == MappingServer.Status.MAPPING:
       if mapping_server.messaging_service is not None:
