@@ -366,7 +366,8 @@ class MappingServer:
     # will not affect old results.
     if not self.cfg.querying.compute_prob:
       self._queries_feats = None
-      self._queries_labels.clear()
+      if self._queries_labels is not None:
+        self._queries_labels.clear()
     # Idling loop
     while self.status == MappingServer.Status.IDLE:
       self._status_lock.release()
