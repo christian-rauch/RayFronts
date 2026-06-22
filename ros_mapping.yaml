@@ -1,0 +1,38 @@
+defaults:
+  - default
+  - override dataset: ros2orbbec
+  - override encoder: naradio
+  - override mapping: semantic_voxel_map # semantic features with every voxel
+  # - override mapping: semantic_point_cloud # semantic feature with every point
+  - override vis: null
+  # - override vis: rerun # Choose the visualizer - can be either 'rerun' or 'null'
+  # - override vis: rerun
+  # - override vis: ros
+  # - override messaging_service: ros
+  - override messaging_service: null
+  - _self_
+
+# Choose any suitable folder for saving the results
+eval_out: eval_out/naradio
+
+dataset:
+  rgb_resolution: [640, 480]
+  depth_resolution: [640, 480]
+
+mapping:
+  vox_size: 0.05 # 5cm voxels
+  vox_accum_period: 4
+  # max_pts_per_frame: -1
+  max_pts_per_frame: 1000
+
+encoder:
+  model_version: radio_v2.5-b
+  lang_model: siglip
+
+querying:
+  text_query_mode: prompts
+  compute_prob: False # set "True" to softmax over multiple queries
+
+# messaging_service:
+#   text_query_topic: "mapping/query/text"
+#   # text_query_callback: "mapping/query/text_cb"
